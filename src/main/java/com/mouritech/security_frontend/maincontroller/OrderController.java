@@ -21,35 +21,56 @@ import java.util.List;
 @PreAuthorize("hasAuthority('USER')")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 
-    @Autowired
-    private PaymentService paymentService;  // Add this
+	@Autowired
+	private PaymentService paymentService; // Add this
 
-    @PostMapping("/place")
-    public ResponseEntity<OrderResponse> placeOrder(@RequestBody OrderRequest request,
-                                                    @AuthenticationPrincipal UserDetails user) {
-        // 1️⃣ Place the order
-        OrderResponse orderResponse = orderService.placeOrder(request, user.getUsername());
+	@PostMapping("/place")
+	public ResponseEntity<OrderResponse> placeOrder(@RequestBody OrderRequest request,
+			@AuthenticationPrincipal UserDetails user) {
+		// 1️⃣ Place the order
+		OrderResponse orderResponse = orderService.placeOrder(request, user.getUsername());
 
-        // 2️⃣ Create a payment entry
-        PaymentRequest paymentRequest = new PaymentRequest();
-        paymentRequest.setOrderId(orderResponse.getOrderId());
-        paymentRequest.setPaymentMethod(request.getPaymentMethod());
+		// 2️⃣ Create a payment entry
+		PaymentRequest paymentRequest = new PaymentRequest();
+		paymentRequest.setOrderId(orderResponse.getOrderId());
+		paymentRequest.setPaymentMethod(request.getPaymentMethod());
 
-        PaymentResponse paymentResponse = paymentService.processPayment(paymentRequest, user.getUsername());
+		PaymentResponse paymentResponse = paymentService.processPayment(paymentRequest, user.getUsername());
 
-        // 3️⃣ Attach payment info to response
-        orderResponse.setPaymentId(paymentResponse.getPaymentId());
-        orderResponse.setPaymentStatus(paymentResponse.getStatus());
+		// 3️⃣ Attach payment info to response
+		orderResponse.setPaymentId(paymentResponse.getPaymentId());
+		orderResponse.setPaymentStatus(paymentResponse.getStatus());
 
-        return ResponseEntity.ok(orderResponse);
-    }
+		return ResponseEntity.ok(orderResponse);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<OrderResponse>> getOrders(@AuthenticationPrincipal UserDetails user) {
+		return ResponseEntity.ok(orderService.getOrders(user.getUsername()));
+	}
+
+	@PutMapping("/{orderId}/items/{itemId}/cancel")
+	public ResponseEntity<?> cancelOrderItem(
+	        @PathVariable Long orderId,
+	        @PathVariable Long itemId,
+	        @RequestParam int quantity,
+	        @AuthenticationPrincipal UserDetails user) {
+	    orderService.cancelOrderItem(orderId, itemId, quantity, user.getUsername());
+	    return ResponseEntity.ok("Item cancelled");
+	}
+
+	@PutMapping("/{orderId}/items/{itemId}/return")
+	public ResponseEntity<?> returnOrderItem(
+	        @PathVariable Long orderId,
+	        @PathVariable Long itemId,
+	        @RequestParam int quantity,
+	        @AuthenticationPrincipal UserDetails user) {
+	    orderService.returnOrderItem(orderId, itemId, quantity, user.getUsername());
+	    return ResponseEntity.ok("Item returned");
+	}
 
 
-    @GetMapping
-    public ResponseEntity<List<OrderResponse>> getOrders(@AuthenticationPrincipal UserDetails user) {
-        return ResponseEntity.ok(orderService.getOrders(user.getUsername()));
-    }
 }

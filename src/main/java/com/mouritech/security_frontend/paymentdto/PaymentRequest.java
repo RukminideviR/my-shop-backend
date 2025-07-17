@@ -1,22 +1,31 @@
 package com.mouritech.security_frontend.paymentdto;
 
 public class PaymentRequest {
-    private Long orderId;
-    private String paymentMethod; 
+	private Long orderId;
+	private String paymentMethod;
+	private String razorpayPaymentId; 
 
-    public Long getOrderId() {
-        return orderId;
-    }
+	public String getRazorpayPaymentId() {
+		return razorpayPaymentId;
+	}
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
+	public void setRazorpayPaymentId(String razorpayPaymentId) {
+		this.razorpayPaymentId = razorpayPaymentId;
+	}
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
+	public Long getOrderId() {
+		return orderId;
+	}
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
 }

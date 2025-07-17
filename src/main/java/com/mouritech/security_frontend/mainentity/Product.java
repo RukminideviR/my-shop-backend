@@ -2,6 +2,8 @@ package com.mouritech.security_frontend.mainentity;
 
 import java.time.LocalDateTime;
 
+import com.mouritech.security_frontend.entity.User;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -32,6 +34,7 @@ public class Product {
 
 	@Transient
 	private String productImageUrl;
+
 
 	public String getProductImageUrl() {
 		return "http://localhost:8005/api/products/" + this.productId + "/image";

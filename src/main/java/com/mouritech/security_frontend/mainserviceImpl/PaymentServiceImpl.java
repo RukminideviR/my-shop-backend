@@ -32,12 +32,10 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setOrder(order);
         payment.setUserEmail(userEmail);
         payment.setPaymentDate(LocalDateTime.now());
+        payment.setRazorpayPaymentId(request.getRazorpayPaymentId()); 
 
-        if ("ONLINE_PAYMENT".equalsIgnoreCase(request.getPaymentMethod())) {
-            payment.setStatus(PaymentStatus.PENDING);
-        } else {
-            payment.setStatus(PaymentStatus.PENDING); 
-        }
+        
+        payment.setStatus(PaymentStatus.PENDING);
 
         paymentRepository.save(payment);
 

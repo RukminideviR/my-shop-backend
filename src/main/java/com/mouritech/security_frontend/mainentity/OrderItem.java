@@ -1,5 +1,9 @@
 package com.mouritech.security_frontend.mainentity;
 
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -24,9 +28,38 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
+    
+    private String status; // e.g., PLACED, CANCELLED, RETURNED
+    private LocalDateTime statusUpdatedDate;
+
 
     private int quantity;
     private double price;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private LocalDateTime deliveryDate;
+
+    
+    
+    
+	public LocalDateTime getDeliveryDate() {
+		return deliveryDate;
+	}
+	public void setDeliveryDate(LocalDateTime deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public LocalDateTime getStatusUpdatedDate() {
+		return statusUpdatedDate;
+	}
+	public void setStatusUpdatedDate(LocalDateTime statusUpdatedDate) {
+		this.statusUpdatedDate = statusUpdatedDate;
+	}
 	public Long getId() {
 		return id;
 	}

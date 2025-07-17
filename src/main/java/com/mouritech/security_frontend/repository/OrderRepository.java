@@ -21,4 +21,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	    Double getTotalRevenueBySeller(@Param("sellerEmail") String sellerEmail);
 
 	    Optional<Order> findByRazorpayOrderId(String razorpayOrderId);
+	    
+//	    @Query("SELECT SUM(i.price) FROM Order o JOIN o.items i WHERE i.status NOT IN ('CANCELLED', 'RETURNED')")
+//	    Double getTotalRevenue();
 }

@@ -4,9 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,22 +21,46 @@ import jakarta.persistence.Table;
 @Table(name = "orders")
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long orderId;
 
-    private String userEmail;
-    private String shippingAddress;
-    private String paymentMethod; // COD or ONLINE
-    private LocalDateTime orderDate;
-    private double totalAmount;
+	private String userEmail;
+	private String shippingAddress;
+	private String paymentMethod; // COD or ONLINE
+	private LocalDateTime orderDate;
+	private double totalAmount;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> items = new ArrayList<>();
-    
-    @Column(name = "razorpay_order_id")
-    private String razorpayOrderId;
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	private List<OrderItem> items = new ArrayList<>();
 
+	@Column(name = "razorpay_order_id")
+	private String razorpayOrderId;
+
+	@Enumerated(EnumType.STRING)
+	private OrderStatus status = OrderStatus.PLACED;
+
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+	private LocalDateTime deliveryDate;
+
+	
+	
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+
+	public LocalDateTime getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(LocalDateTime deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
 
 	public Long getOrderId() {
 		return orderId;
@@ -89,7 +117,6 @@ public class Order {
 	public void setItems(List<OrderItem> items) {
 		this.items = items;
 	}
-	
 
 	public String getRazorpayOrderId() {
 		return razorpayOrderId;
@@ -98,8 +125,6 @@ public class Order {
 	public void setRazorpayOrderId(String razorpayOrderId) {
 		this.razorpayOrderId = razorpayOrderId;
 	}
-
-
 
 	public Order(Long orderId, String userEmail, String shippingAddress, String paymentMethod, LocalDateTime orderDate,
 			double totalAmount, List<OrderItem> items, String razorpayOrderId) {
@@ -121,10 +146,7 @@ public class Order {
 
 	public void setPaymentStatus(PaymentStatus success) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-
-
-    
 }

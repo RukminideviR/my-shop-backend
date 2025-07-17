@@ -3,6 +3,7 @@ package com.mouritech.security_frontend.orderdto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.mouritech.security_frontend.mainentity.OrderStatus;
 import com.mouritech.security_frontend.mainentity.PaymentStatus;
 
 public class OrderResponse {
@@ -15,10 +16,28 @@ public class OrderResponse {
 	private String razorpayOrderId;
 	private Long paymentId;
 	private PaymentStatus paymentStatus;
+	private OrderStatus status;
+	private LocalDateTime deliveryDate;
 
 	// Getters and Setters for new fields
 	public Long getPaymentId() {
 		return paymentId;
+	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+
+	public LocalDateTime getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(LocalDateTime deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 
 	public void setPaymentId(Long paymentId) {
@@ -26,11 +45,11 @@ public class OrderResponse {
 	}
 
 	public PaymentStatus getPaymentStatus() {
-	    return paymentStatus;
+		return paymentStatus;
 	}
 
 	public void setPaymentStatus(PaymentStatus paymentStatus) {
-	    this.paymentStatus = paymentStatus;
+		this.paymentStatus = paymentStatus;
 	}
 
 	public String getRazorpayOrderId() {
